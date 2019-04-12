@@ -1,0 +1,28 @@
+<svg width="100%" height="100%" id="canvas">
+  <defs>
+    <marker
+      class="edge-marker"
+      id="end-arrow"
+      viewBox="1 0 10 10"
+      refX="40"
+      refY="3.5"
+      markerWidth="30"
+      markerHeight="30"
+      orient="auto"
+    >
+      <polygon class="link" points="0 0, 10 3.5, 0 7" />
+    </marker>
+  </defs>
+  <g class="zoom-content">
+    <g class="nodes-chart-elements">
+      <g class="edges-container">
+        <g
+          class="edge"
+          *ngFor="let edge of edges"
+          app-nodes-chart-edge
+          [edge]="edge"
+        ></g>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,39 @@
+<svg:g [attr.transform]="node.transform" [ngStyle]="{ opacity: node.opacity }">
+  <svg:g class="node">
+    <svg:g class="node-labels-container">
+      <svg:text
+        class="node-label"
+        [attr.y]="13 + labelOffsetY"
+        textAnchor="middle"
+      >
+        {{ node.label }}
+      </svg:text>
+      <!-- <text
+        class="node-minor-label"
+        [attr.y]="30 + labelOffsetY"
+        textAnchor="middle"
+      >
+        {{ node.labelMinor }}
+      </text> -->
+    </svg:g>
+
+    <svg:g
+      #ref
+      (click)="onClick(ref)"
+      (mouseenter)="onMouseEnter(ref)"
+      (mouseleave)="onMouseLeave(ref)"
+    >
+      <!-- <NodeShapeType
+        id="{id}"
+        highlighted="{highlighted}"
+        color="{color}"
+        metric="{metric}"
+        contrastMode="{this.props.contrastMode}"
+      /> -->
+    </svg:g>
+
+    <!-- {showingNetworks &&
+    <NodeNetworksOverlay networks="{networks}" stack="{stack}" />
+    } -->
+  </svg:g>
+</svg:g>

@@ -2,10 +2,18 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
+import { DagreRelationComponent } from './dagre-relation/dagre-relation.component';
+import { NodesChartComponent } from './nodes-chart/nodes-chart.component';
+import { NodesChartNodeComponent } from './nodes-chart-node/nodes-chart-node.component';
+import { NodesChartEdgeComponent } from './nodes-chart-edge/nodes-chart-edge.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DagreRelationComponent,
+    NodesChartComponent,
+    NodesChartNodeComponent,
+    NodesChartEdgeComponent
   ],
   imports: [
     BrowserModule
