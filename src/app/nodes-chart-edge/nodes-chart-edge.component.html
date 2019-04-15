@@ -1,6 +1,7 @@
 <svg:g
   [id]="edge.id"
   class="link-container"
+  [ngClass]="{ highlighted: isHighlighted }"
   (mouseenter)="handleMouseEnter()"
   (mouseleave)="handleMouseLeave()"
 >
@@ -9,11 +10,10 @@
     [attr.d]="edge.path"
     [ngStyle]="{ strokeWidth: 10 * edge.thickness }"
   />
-  <svg:path [attr.d]="path" style="strokeWidth: 5" />
   <svg:path
     class="link"
     [attr.d]="edge.path"
-    markerEnd="url(#end-arrow)"
+    marker-end="url(#end-arrow)"
     [ngStyle]="{ strokeWidth: edge.thickness }"
   />
 </svg:g>

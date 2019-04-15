@@ -6,6 +6,7 @@ import { DagreRelationComponent } from './dagre-relation/dagre-relation.componen
 import { NodesChartComponent } from './nodes-chart/nodes-chart.component';
 import { NodesChartNodeComponent } from './nodes-chart-node/nodes-chart-node.component';
 import { NodesChartEdgeComponent } from './nodes-chart-edge/nodes-chart-edge.component';
+import { NodesChartShapeComponent } from './nodes-chart-shape/nodes-chart-shape.component';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { NodesChartEdgeComponent } from './nodes-chart-edge/nodes-chart-edge.com
     DagreRelationComponent,
     NodesChartComponent,
     NodesChartNodeComponent,
-    NodesChartEdgeComponent
+    NodesChartEdgeComponent,
+    NodesChartShapeComponent
   ],
   imports: [
     BrowserModule

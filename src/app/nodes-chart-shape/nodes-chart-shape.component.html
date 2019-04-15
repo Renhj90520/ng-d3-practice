@@ -1,0 +1,23 @@
+<ng-container *ngIf="info.type === 'circle'">
+  <svg:circle
+    r="1"
+    *ngIf="info.isHighlighted"
+    transform="scale(0.5)"
+    class="highlight-border"
+  />
+  <svg:circle
+    r="1"
+    *ngIf="info.isHighlighted"
+    transform="scale(0.5)"
+    class="highlight-shadow"
+  />
+  <svg:circle r="1" transform="scale(0.48)" class="background" />
+  <svg:circle r="1" transform="scale(0.49)" class="node-shadow" />
+  <svg:circle
+    r="1"
+    transform="scale(0.5)"
+    class="node-border"
+    [ngStyle]="{ stroke: info.color }"
+  />
+  <svg:circle r="0.1" class="anchor" />
+</ng-container>

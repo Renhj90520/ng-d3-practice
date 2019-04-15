@@ -7,11 +7,14 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class NodesChartEdgeComponent implements OnInit {
   @Input() edge;
+  isHighlighted = false;
   constructor() {}
 
-  ngOnInit() {
-    console.log('edge ngOnInit');
+  ngOnInit() {}
+  handleMouseEnter() {
+    this.isHighlighted = true;
   }
-  handleMouseEnter() {}
-  handleMouseLeave() {}
+  handleMouseLeave() {
+    this.isHighlighted = false;
+  }
 }

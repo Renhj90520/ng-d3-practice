@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import NodeInfo from '../nodes-chart-shape/node-info';
 
 @Component({
   selector: '[app-nodes-chart-node]',
@@ -7,12 +8,24 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class NodesChartNodeComponent implements OnInit {
   @Input() node;
+  info: NodeInfo;
 
   labelOffsetY = 28;
   constructor() {}
 
-  ngOnInit() {}
-  onClick(ref) {}
-  onMouseEnter(ref) {}
-  onMouseLeave(ref) {}
+  ngOnInit() {
+    this.info = {
+      type: 'circle',
+      isHighlighted: false,
+      color: '#2086bf',
+      scale: 55
+    };
+  }
+  onClick() {}
+  onMouseEnter() {
+    this.info.isHighlighted = true;
+  }
+  onMouseLeave() {
+    this.info.isHighlighted = false;
+  }
 }

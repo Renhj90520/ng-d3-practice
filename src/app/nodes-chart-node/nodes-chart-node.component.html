@@ -3,8 +3,8 @@
     <svg:g class="node-labels-container">
       <svg:text
         class="node-label"
-        [attr.y]="13 + labelOffsetY"
-        textAnchor="middle"
+        [attr.y]="20 + labelOffsetY"
+        text-anchor="middle"
       >
         {{ node.label }}
       </svg:text>
@@ -18,10 +18,11 @@
     </svg:g>
 
     <svg:g
-      #ref
-      (click)="onClick(ref)"
-      (mouseenter)="onMouseEnter(ref)"
-      (mouseleave)="onMouseLeave(ref)"
+      (click)="onClick()"
+      (mouseenter)="onMouseEnter()"
+      (mouseleave)="onMouseLeave()"
+      transform="scale(55)"
+      class="shape-container"
     >
       <!-- <NodeShapeType
         id="{id}"
@@ -30,6 +31,7 @@
         metric="{metric}"
         contrastMode="{this.props.contrastMode}"
       /> -->
+      <svg:g app-nodes-chart-shape [info]="info"></svg:g>
     </svg:g>
 
     <!-- {showingNetworks &&
