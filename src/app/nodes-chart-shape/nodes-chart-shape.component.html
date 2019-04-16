@@ -1,13 +1,13 @@
 <ng-container *ngIf="info.type === 'circle'">
   <svg:circle
     r="1"
-    *ngIf="info.isHighlighted"
+    *ngIf="info.isHighlighted || info.isSelected"
     transform="scale(0.5)"
     class="highlight-border"
   />
   <svg:circle
     r="1"
-    *ngIf="info.isHighlighted"
+    *ngIf="info.isHighlighted || info.isSelected"
     transform="scale(0.5)"
     class="highlight-shadow"
   />

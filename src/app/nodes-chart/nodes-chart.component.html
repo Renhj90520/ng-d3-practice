@@ -33,6 +33,7 @@
           *ngFor="let node of nodes"
           app-nodes-chart-node
           [node]="node"
+          (onNodeClicked)="nodeSelected($event)"
         ></g>
       </g>
     </g>

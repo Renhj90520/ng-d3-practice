@@ -3,4 +3,5 @@ export default interface NodeInfo {
   isHighlighted: boolean;
   color: string;
   scale: number;
+  isSelected?: boolean;
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import NodeInfo from '../nodes-chart-shape/node-info';
 
 @Component({
@@ -8,6 +8,7 @@ import NodeInfo from '../nodes-chart-shape/node-info';
 })
 export class NodesChartNodeComponent implements OnInit {
   @Input() node;
+  @Output() onNodeClicked = new EventEmitter<any>();
   info: NodeInfo;
 
   labelOffsetY = 28;
@@ -21,7 +22,10 @@ export class NodesChartNodeComponent implements OnInit {
       scale: 55
     };
   }
-  onClick() {}
+  onClick() {
+    this.info.isSelected = true;
+    this.onNodeClicked.emit(this.node);
+  }
   onMouseEnter() {
     this.info.isHighlighted = true;
   }
