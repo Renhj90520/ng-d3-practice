@@ -1,5 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import NodeInfo from '../nodes-chart-shape/node-info';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  OnDestroy
+} from '@angular/core';
+import ShapeInfo from '../nodes-chart-shape/shape-info';
 
 @Component({
   selector: '[app-nodes-chart-node]',
@@ -9,27 +16,26 @@ import NodeInfo from '../nodes-chart-shape/node-info';
 export class NodesChartNodeComponent implements OnInit {
   @Input() node;
   @Output() onNodeClicked = new EventEmitter<any>();
-  info: NodeInfo;
+  shapeInfo: ShapeInfo;
 
   labelOffsetY = 28;
   constructor() {}
 
   ngOnInit() {
-    this.info = {
+    this.shapeInfo = {
       type: 'circle',
-      isHighlighted: false,
       color: '#2086bf',
       scale: 55
     };
   }
   onClick() {
-    this.info.isSelected = true;
+    this.node.isSelected = true;
     this.onNodeClicked.emit(this.node);
   }
   onMouseEnter() {
-    this.info.isHighlighted = true;
+    this.node.isHighlighted = true;
   }
   onMouseLeave() {
-    this.info.isHighlighted = false;
+    this.node.isHighlighted = false;
   }
 }

@@ -19,22 +19,33 @@
   </defs>
   <g class="zoom-content">
     <g class="nodes-chart-elements">
-      <g class="edges-container">
-        <g
-          class="edge"
-          *ngFor="let edge of edges"
-          app-nodes-chart-edge
-          [edge]="edge"
-        ></g>
-      </g>
-      <g class="nodes-container">
-        <g
-          class="node"
-          *ngFor="let node of nodes"
-          app-nodes-chart-node
-          [node]="node"
-          (onNodeClicked)="nodeSelected($event)"
-        ></g>
+      <g class="elements-container">
+        <g class="element" *ngFor="let element of elements">
+          <g
+            class="edge"
+            *ngIf="element.elType === 'edge'"
+            app-nodes-chart-edge
+            [edge]="element"
+          ></g>
+          <g
+            class="node"
+            *ngIf="element.elType === 'node'"
+            app-nodes-chart-node
+            [node]="element"
+            (onNodeClicked)="nodeSelected($event)"
+          ></g>
+          <rect
+            transform="scale(1000000)"
+            fill="#fafafc"
+            x="-1"
+            y="-1"
+            width="2"
+            height="2"
+            opacity="0.9"
+            *ngIf="element.elType === 'overlay'"
+            (click)="restoreLayout()"
+          />
+        </g>
       </g>
     </g>
   </g>

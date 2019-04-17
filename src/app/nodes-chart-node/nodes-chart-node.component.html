@@ -1,4 +1,4 @@
-<svg:g [attr.transform]="node.transform" [ngStyle]="{ opacity: node.opacity }">
+<svg:g [attr.transform]="node.transform" class="node-container">
   <svg:g class="node">
     <svg:g class="node-labels-container">
       <svg:text
@@ -31,7 +31,7 @@
         metric="{metric}"
         contrastMode="{this.props.contrastMode}"
       /> -->
-      <svg:g app-nodes-chart-shape [info]="info"></svg:g>
+      <svg:g app-nodes-chart-shape [info]="shapeInfo" [node]="node"></svg:g>
     </svg:g>
 
     <!-- {showingNetworks &&

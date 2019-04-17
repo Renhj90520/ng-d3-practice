@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import NodeInfo from './node-info';
+import NodeInfo from './shape-info';
 
 @Component({
   selector: '[app-nodes-chart-shape]',
@@ -8,6 +8,7 @@ import NodeInfo from './node-info';
 })
 export class NodesChartShapeComponent implements OnInit {
   @Input() info: NodeInfo;
+  @Input() node;
 
   constructor() {}
 
