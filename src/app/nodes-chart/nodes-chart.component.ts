@@ -123,6 +123,9 @@ export class NodesChartComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   nodeSelected(node) {
+    if (this.currentNodeForDetail) {
+      this.currentNodeForDetail.isSelected = false;
+    }
     this.isShowDetail = true;
     this.currentNodeForDetail = node;
     this.slideState = 'slidein';
