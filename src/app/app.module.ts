@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
@@ -7,6 +8,8 @@ import { NodesChartComponent } from './nodes-chart/nodes-chart.component';
 import { NodesChartNodeComponent } from './nodes-chart-node/nodes-chart-node.component';
 import { NodesChartEdgeComponent } from './nodes-chart-edge/nodes-chart-edge.component';
 import { NodesChartShapeComponent } from './nodes-chart-shape/nodes-chart-shape.component';
+import { DetailsCardComponent } from './details-card/details-card.component';
+import { SlimScrollComponent } from './slim-scroll/slim-scroll.component';
 
 @NgModule({
   declarations: [
@@ -15,12 +18,12 @@ import { NodesChartShapeComponent } from './nodes-chart-shape/nodes-chart-shape.
     NodesChartComponent,
     NodesChartNodeComponent,
     NodesChartEdgeComponent,
-    NodesChartShapeComponent
+    NodesChartShapeComponent,
+    DetailsCardComponent,
+    SlimScrollComponent
   ],
-  imports: [
-    BrowserModule
-  ],
+  imports: [BrowserModule, BrowserAnimationsModule],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

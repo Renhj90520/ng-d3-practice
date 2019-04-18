@@ -3,9 +3,6 @@ import {
   OnInit,
   AfterViewInit,
   Input,
-  OnDestroy,
-  Output,
-  EventEmitter,
   OnChanges,
   SimpleChanges
 } from '@angular/core';
@@ -13,21 +10,37 @@ import * as d3 from 'd3-selection';
 import * as d3Zoom from 'd3-zoom';
 import { NodesChartService } from '../nodes-chart.service';
 import LayoutBuilder from './layout-builder';
-import { TimelineLite, Timeline, TweenLite, Power3 } from 'gsap';
+import { TimelineLite, TweenLite, Power3 } from 'gsap';
+import {
+  trigger,
+  state,
+  transition,
+  animate,
+  style
+} from '@angular/animations';
 @Component({
   selector: 'app-nodes-chart',
   templateUrl: './nodes-chart.component.html',
   styleUrls: ['./nodes-chart.component.less'],
   host: {
     '[class.nodes-chart]': 'true'
-  }
+  },
+  animations: [
+    trigger('slide', [
+      state('slidein', style({ opacity: 1, transform: 'translate(0,0px)' })),
+      state('slideout', style({ opacity: 0, transform: 'translate(0,-30px)' })),
+      transition('slidein<=>slideout', animate('300ms ease-in-out'))
+    ])
+  ]
 })
 export class NodesChartComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() minScale = 1;
   @Input() maxScale = 1;
   @Input() data;
+  slideState = 'slideout';
 
-  @Output() nodeClicked = new EventEmitter<any>();
+  isShowDetail = false;
+  currentNodeForDetail;
 
   svg;
   container;
@@ -112,14 +125,21 @@ export class NodesChartComponent implements OnInit, OnChanges, AfterViewInit {
     if (!this.timeline) {
       this.timeline = new TimelineLite();
     }
+    this.timeline.reverse();
     this.timeline.clear();
     this.elements = this.layoutBuilder.nodeSelected(
       node,
       this.svg,
       this.timeline
     );
+    this.isShowDetail = true;
+    this.currentNodeForDetail = node;
+    this.slideState = 'slidein';
   }
   restoreLayout() {
+    this.slideState = 'slideout';
+    this.isShowDetail = false;
+    this.currentNodeForDetail = null;
     this.elements = this.layoutBuilder.doLayout();
     this.timeline.reverse();
   }
