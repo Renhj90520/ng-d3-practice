@@ -20,7 +20,7 @@
   <g class="zoom-content">
     <g class="nodes-chart-elements">
       <g class="elements-container">
-        <g class="element" *ngFor="let element of elements">
+        <g class="element" *ngFor="let element of elements" [id]="element.name">
           <g
             class="edge"
             *ngIf="element.elType === 'edge'"

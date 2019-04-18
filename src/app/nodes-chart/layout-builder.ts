@@ -1,6 +1,7 @@
 import DagreLayout from './dagre-layout';
 import * as d3Shape from 'd3-shape';
 import { scaleThreshold } from 'd3-scale';
+import { TweenLite, TimelineLite, Power3 } from 'gsap';
 export default class LayoutBuilder {
   data;
   nodes = [];
@@ -10,6 +11,12 @@ export default class LayoutBuilder {
   radiusDesnity = scaleThreshold()
     .domain([3, 6])
     .range([2.5, 3, 2.5]);
+
+  pathFun = d3Shape
+    .line()
+    .curve(d3Shape.curveBasis)
+    .x(d => d[0])
+    .y(d => d[1]);
   constructor(data) {
     this.data = data;
     this.initData();
@@ -22,7 +29,7 @@ export default class LayoutBuilder {
   private recursiveBuildNodesAndEdges(node, parent?) {
     if (parent) {
       this.edges.push({
-        id: `${parent.name}->${node.name}`,
+        id: `${parent.name}--${node.name}`,
         start: parent.name,
         end: node.name,
         elType: 'edge'
@@ -45,24 +52,19 @@ export default class LayoutBuilder {
     this.graphInfo = dagreLayout.doLayout();
     this.edges.forEach(edge => {
       const points = edge.points.map(ps => [ps.x, ps.y]);
-      const pathFun = d3Shape
-        .line()
-        .curve(d3Shape.curveBasis)
-        .x(d => d[0])
-        .y(d => d[1]);
-      edge.path = pathFun(points);
+
+      edge.path = this.pathFun(points);
       edge.thickness = 1;
     });
 
     this.nodes.forEach(node => {
       node.isSelected = false;
-      node.transform = `translate(${node.x},${node.y})`;
     });
 
     return this.edges.concat(this.nodes);
   }
 
-  nodeSelected(node, svg) {
+  nodeSelected(node, svg, timeline) {
     node.z = 1;
     const svgNode = svg.node();
     const boundingRect = svgNode.getBoundingClientRect();
@@ -104,6 +106,14 @@ export default class LayoutBuilder {
 
     node.x = (-translateX + centerX) / scale;
     node.y = (-translateY + centerY) / scale;
+    timeline.add(
+      TweenLite.to(`#${node.name}`, 0.5, {
+        ease: Power3.easeInOut,
+        x: node.x,
+        y: node.y
+      }),
+      0
+    );
     let adjacentEdges = this.getAdjacentEdges(node);
     const adjacentNodes = this.getAdjacentNodes(node, adjacentEdges);
     adjacentNodes.forEach(n => {
@@ -134,6 +144,14 @@ export default class LayoutBuilder {
         n.x = node.x + circularRadius * Math.sin(angle);
         n.y = node.y + circularRadius * Math.cos(angle);
         n.z = 1;
+        timeline.add(
+          TweenLite.to(`#${n.name}`, 0.5, {
+            ease: Power3.easeInOut,
+            x: n.x,
+            y: n.y
+          }),
+          0
+        );
       } else {
         if (n.name !== node.name) {
           n.z = -1;
@@ -145,28 +163,21 @@ export default class LayoutBuilder {
       const edgeOrigin = this.edges.find(e => e.id === edge.id);
       const source = this.nodes.find(node => node.name === edgeOrigin.start);
       const target = this.nodes.find(node => node.name === edge.end);
+      edgeOrigin.path = this.pathFun([
+        [source.x, source.y],
+        [target.x, target.y]
+      ]);
 
-      edgeOrigin.points = [
-        { x: source.x, y: source.y },
-        { x: target.x, y: target.y }
-      ];
+      timeline.add(
+        TweenLite.to(`#${edgeOrigin.id} .link`, 0.5, {
+          ease: Power3.easeInOut,
+          attr: { d: edgeOrigin.path }
+        }),
+        0
+      );
     });
 
-    this.edges.forEach(edge => {
-      const points = edge.points.map(ps => [ps.x, ps.y]);
-      const pathFun = d3Shape
-        .line()
-        .curve(d3Shape.curveBasis)
-        .x(d => d[0])
-        .y(d => d[1]);
-      edge.path = pathFun(points);
-      edge.thickness = 1;
-    });
-
-    this.nodes.forEach(node => {
-      node.transform = `translate(${node.x},${node.y})`;
-    });
-
+    timeline.play();
     return this.edges
       .filter(edge => edge.z === -1)
       .concat(this.nodes.filter(node => node.z === -1))

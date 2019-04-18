@@ -11,10 +11,9 @@ import {
 } from '@angular/core';
 import * as d3 from 'd3-selection';
 import * as d3Zoom from 'd3-zoom';
-import * as d3Shape from 'd3-shape';
-import { scaleThreshold } from 'd3-scale';
 import { NodesChartService } from '../nodes-chart.service';
 import LayoutBuilder from './layout-builder';
+import { TimelineLite, Timeline, TweenLite, Power3 } from 'gsap';
 @Component({
   selector: 'app-nodes-chart',
   templateUrl: './nodes-chart.component.html',
@@ -38,6 +37,7 @@ export class NodesChartComponent implements OnInit, OnChanges, AfterViewInit {
 
   layoutBuilder;
   elements = [];
+  timeline: TimelineLite;
 
   constructor(private nodesChartService: NodesChartService) {}
 
@@ -45,7 +45,31 @@ export class NodesChartComponent implements OnInit, OnChanges, AfterViewInit {
     if (changes.data && this.data) {
       this.layoutBuilder = new LayoutBuilder(this.data);
       this.elements = this.layoutBuilder.doLayout();
-      this.fitToContainer();
+      setTimeout(() => {
+        const tl = new TimelineLite();
+        this.elements.forEach(element => {
+          if (element.elType === 'node') {
+            tl.add(
+              TweenLite.to(`#${element.name}`, 0.5, {
+                ease: Power3.easeInOut,
+                x: element.x,
+                y: element.y
+              }),
+              0
+            );
+          } else if (element.elType === 'edge') {
+            tl.add(
+              TweenLite.to(`#${element.id} .link`, 0.5, {
+                ease: Power3.easeInOut,
+                attr: { d: element.path }
+              }),
+              0
+            );
+          }
+        });
+        tl.play();
+        this.fitToContainer();
+      }, 0);
     }
   }
   ngOnInit() {}
@@ -85,9 +109,18 @@ export class NodesChartComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   nodeSelected(node) {
-    this.elements = this.layoutBuilder.nodeSelected(node, this.svg);
+    if (!this.timeline) {
+      this.timeline = new TimelineLite();
+    }
+    this.timeline.clear();
+    this.elements = this.layoutBuilder.nodeSelected(
+      node,
+      this.svg,
+      this.timeline
+    );
   }
   restoreLayout() {
     this.elements = this.layoutBuilder.doLayout();
+    this.timeline.reverse();
   }
 }
