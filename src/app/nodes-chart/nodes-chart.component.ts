@@ -51,6 +51,7 @@ export class NodesChartComponent implements OnInit, OnChanges, AfterViewInit {
   layoutBuilder;
   elements = [];
   timeline: TimelineLite;
+  initTimeline;
 
   constructor(private nodesChartService: NodesChartService) {}
 
@@ -59,10 +60,10 @@ export class NodesChartComponent implements OnInit, OnChanges, AfterViewInit {
       this.layoutBuilder = new LayoutBuilder(this.data);
       this.elements = this.layoutBuilder.doLayout();
       setTimeout(() => {
-        const tl = new TimelineLite();
+        this.initTimeline = new TimelineLite();
         this.elements.forEach(element => {
           if (element.elType === 'node') {
-            tl.add(
+            this.initTimeline.add(
               TweenLite.to(`#${element.name}`, 0.5, {
                 ease: Power3.easeInOut,
                 x: element.x,
@@ -71,7 +72,7 @@ export class NodesChartComponent implements OnInit, OnChanges, AfterViewInit {
               0
             );
           } else if (element.elType === 'edge') {
-            tl.add(
+            this.initTimeline.add(
               TweenLite.to(`#${element.id} .link`, 0.5, {
                 ease: Power3.easeInOut,
                 attr: { d: element.path }
@@ -80,7 +81,7 @@ export class NodesChartComponent implements OnInit, OnChanges, AfterViewInit {
             );
           }
         });
-        tl.play();
+        this.initTimeline.play();
         this.fitToContainer();
       }, 0);
     }
@@ -122,19 +123,21 @@ export class NodesChartComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   nodeSelected(node) {
-    if (!this.timeline) {
-      this.timeline = new TimelineLite();
-    }
-    this.timeline.reverse();
-    this.timeline.clear();
-    this.elements = this.layoutBuilder.nodeSelected(
-      node,
-      this.svg,
-      this.timeline
-    );
     this.isShowDetail = true;
     this.currentNodeForDetail = node;
     this.slideState = 'slidein';
+    if (!this.timeline) {
+      this.timeline = new TimelineLite({
+        onReverseComplete: this.reverseComplete.bind(this, node)
+      });
+      this.elements = this.layoutBuilder.nodeSelected(
+        node,
+        this.svg,
+        this.timeline
+      );
+    } else {
+      this.timeline.reverse().timeScale(100);
+    }
   }
   restoreLayout() {
     this.slideState = 'slideout';
@@ -142,5 +145,19 @@ export class NodesChartComponent implements OnInit, OnChanges, AfterViewInit {
     this.currentNodeForDetail = null;
     this.elements = this.layoutBuilder.doLayout();
     this.timeline.reverse();
+  }
+
+  reverseComplete() {
+    if (this.currentNodeForDetail) {
+      this.timeline.clear();
+      this.timeline.timeScale(1);
+      this.elements = this.layoutBuilder.nodeSelected(
+        this.currentNodeForDetail,
+        this.svg,
+        this.timeline
+      );
+      this.isShowDetail = true;
+      this.slideState = 'slidein';
+    }
   }
 }
