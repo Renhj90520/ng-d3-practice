@@ -53,6 +53,9 @@ export class NodesChartComponent implements OnInit, OnChanges, AfterViewInit {
   timeline: TimelineLite;
   initTimeline;
 
+  offsetX;
+  offsetY;
+
   constructor(private nodesChartService: NodesChartService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -99,7 +102,10 @@ export class NodesChartComponent implements OnInit, OnChanges, AfterViewInit {
       .scaleExtent([this.minScale, this.maxScale])
       .on('zoom', () => {
         this.container.attr('transform', d3.event.transform);
+        this.offsetX = d3.event.transform.x;
+        this.offsetY = d3.event.transform.y;
       });
+
     this.svg.call(this.zoom);
   }
 
@@ -117,7 +123,9 @@ export class NodesChartComponent implements OnInit, OnChanges, AfterViewInit {
       this.elements = this.layoutBuilder.nodeSelected(
         node,
         this.svg,
-        this.timeline
+        this.timeline,
+        this.offsetX,
+        this.offsetY
       );
     } else {
       this.timeline.reverse().timeScale(100);
@@ -138,7 +146,9 @@ export class NodesChartComponent implements OnInit, OnChanges, AfterViewInit {
       this.elements = this.layoutBuilder.nodeSelected(
         this.currentNodeForDetail,
         this.svg,
-        this.timeline
+        this.timeline,
+        this.offsetX,
+        this.offsetY
       );
       this.isShowDetail = true;
       this.slideState = 'slidein';

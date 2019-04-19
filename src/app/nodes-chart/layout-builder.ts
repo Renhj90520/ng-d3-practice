@@ -67,14 +67,14 @@ export default class LayoutBuilder {
     return this.edges.concat(this.nodes);
   }
 
-  nodeSelected(node, svg, timeline) {
+  nodeSelected(node, svg, timeline, offsetX, offsetY) {
     node.z = 1;
     const svgNode = svg.node();
     const boundingRect = svgNode.getBoundingClientRect();
     const width = boundingRect.width;
     const height = boundingRect.height;
-    const centerX = (width - 420 - 60) / 2;
-    const centerY = height / 2;
+    const centerX = (width - 420 - 60) / 2 + this.tWidth - offsetX;
+    const centerY = height / 2 + this.tHeight - offsetY;
 
     // 100: node's size
     const xFactor = width / (this.graphInfo.width + 100);
