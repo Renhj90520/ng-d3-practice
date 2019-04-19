@@ -1,5 +1,6 @@
 import DagreLayout from './dagre-layout';
 import * as d3Shape from 'd3-shape';
+import * as d3Zoom from 'd3-zoom';
 import { scaleThreshold } from 'd3-scale';
 import { TweenLite, TimelineLite, Power3 } from 'gsap';
 export default class LayoutBuilder {
@@ -7,6 +8,8 @@ export default class LayoutBuilder {
   nodes = [];
   edges = [];
   graphInfo;
+  tWidth;
+  tHeight;
 
   radiusDesnity = scaleThreshold()
     .domain([3, 6])
@@ -70,39 +73,17 @@ export default class LayoutBuilder {
     const boundingRect = svgNode.getBoundingClientRect();
     const width = boundingRect.width;
     const height = boundingRect.height;
-    const centerX = width / 2;
+    const centerX = (width - 420 - 60) / 2;
     const centerY = height / 2;
 
     // 100: node's size
-    const xMin = this.nodes
-      .map(node => node.x - 100)
-      .reduce((prev, next) => {
-        return prev < next ? prev : next;
-      });
-    const xMax = this.nodes
-      .map(node => node.x + 100)
-      .reduce((prev, next) => {
-        return prev < next ? next : prev;
-      });
-
-    const yMin = this.nodes
-      .map(node => node.y - 100)
-      .reduce((prev, next) => {
-        return prev < next ? prev : next;
-      });
-    const yMax = this.nodes
-      .map(node => node.y + 100)
-      .reduce((prev, next) => {
-        return prev < next ? next : prev;
-      });
-
-    const xFactor = width / (xMax - xMin);
-    const yFactor = height / (yMax - yMin);
+    const xFactor = width / (this.graphInfo.width + 100);
+    const yFactor = height / (this.graphInfo.height + 100);
 
     const scale = Math.min(xFactor, yFactor) * 0.9;
 
-    const translateX = (width - (xMax + xMin) * scale) / 2;
-    const translateY = (height - (yMax + yMin) * scale) / 2;
+    const translateX = (width - this.graphInfo.width * scale) / 2;
+    const translateY = (height - this.graphInfo.height * scale) / 2;
 
     node.x = (-translateX + centerX) / scale;
     node.y = (-translateY + centerY) / scale;
@@ -210,5 +191,22 @@ export default class LayoutBuilder {
     });
 
     return nodeIds;
+  }
+
+  fitToContainer(svg, zoom) {
+    const padding = 20;
+    const clientWidth = svg._groups[0][0].clientWidth;
+    const clientHeight = svg._groups[0][0].clientHeight;
+    const verticalScale = (clientHeight - 2 * padding) / this.graphInfo.height;
+    const horizontalScale = (clientWidth - 2 * padding) / this.graphInfo.width;
+    const initialScale = Math.min(verticalScale, horizontalScale);
+    this.tWidth = (clientWidth - this.graphInfo.width * initialScale) / 2;
+    this.tHeight = (clientHeight - this.graphInfo.height * initialScale) / 2;
+    svg.call(
+      zoom.transform,
+      d3Zoom.zoomIdentity
+        .translate(this.tWidth, this.tHeight)
+        .scale(initialScale)
+    );
   }
 }

@@ -82,7 +82,7 @@ export class NodesChartComponent implements OnInit, OnChanges, AfterViewInit {
           }
         });
         this.initTimeline.play();
-        this.fitToContainer();
+        this.layoutBuilder.fitToContainer(this.svg, this.zoom);
       }, 0);
     }
   }
@@ -101,25 +101,6 @@ export class NodesChartComponent implements OnInit, OnChanges, AfterViewInit {
         this.container.attr('transform', d3.event.transform);
       });
     this.svg.call(this.zoom);
-  }
-
-  fitToContainer() {
-    const padding = 20;
-    const clientWidth = this.svg._groups[0][0].clientWidth;
-    const clientHeight = this.svg._groups[0][0].clientHeight;
-    const verticalScale =
-      (clientHeight - 2 * padding) / this.layoutBuilder.graphInfo.height;
-    const horizontalScale =
-      (clientWidth - 2 * padding) / this.layoutBuilder.graphInfo.width;
-    const initialScale = Math.min(verticalScale, horizontalScale);
-    const tWidth =
-      (clientWidth - this.layoutBuilder.graphInfo.width * initialScale) / 2;
-    const tHeight =
-      (clientHeight - this.layoutBuilder.graphInfo.height * initialScale) / 2;
-    this.svg.call(
-      this.zoom.transform,
-      d3Zoom.zoomIdentity.translate(tWidth, tHeight).scale(initialScale)
-    );
   }
 
   nodeSelected(node) {
