@@ -24,11 +24,10 @@ export class NodesChartShapeComponent implements OnInit {
     const curve = curveCardinalClosed.tension(0.65);
     const spline = line().curve(curve);
     const innerAngle = (2 * Math.PI) / n;
-    return spline(
-      range(0, n).map(k => [
-        Math.sin(k * innerAngle),
-        -Math.cos(k * innerAngle)
-      ])
-    );
+    const points: [number, number][] = [];
+    range(0, n).forEach(k => {
+      points.push([Math.sin(k * innerAngle), -Math.cos(k * innerAngle)]);
+    });
+    return spline(points);
   }
 }
