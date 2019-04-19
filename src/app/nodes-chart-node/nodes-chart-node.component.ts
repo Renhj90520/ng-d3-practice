@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  OnDestroy
-} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import ShapeInfo from '../nodes-chart-shape/shape-info';
 
 @Component({
@@ -23,7 +16,7 @@ export class NodesChartNodeComponent implements OnInit {
 
   ngOnInit() {
     this.shapeInfo = {
-      type: 'circle',
+      type: 'hexagon',
       color: '#2086bf',
       scale: 55
     };

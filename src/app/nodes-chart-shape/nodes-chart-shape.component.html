@@ -21,3 +21,53 @@
   />
   <svg:circle r="0.1" class="anchor" />
 </ng-container>
+<ng-container *ngIf="info.type === 'cloud'">
+  <svg:path
+    [attr.d]="cloudPath"
+    *ngIf="node.isHighlighted || node.isSelected"
+    transform="scale(0.5)"
+    class="highlight-border"
+  />
+  <svg:path
+    [attr.d]="cloudPath"
+    *ngIf="node.isHighlighted || node.isSelected"
+    transform="scale(0.5)"
+    class="highlight-shadow"
+  />
+  <svg:path [attr.d]="cloudPath" transform="scale(0.48)" class="background" />
+  <svg:path [attr.d]="cloudPath" transform="scale(0.49)" class="node-shadow" />
+  <svg:path
+    [attr.d]="cloudPath"
+    transform="scale(0.5)"
+    class="node-border"
+    [ngStyle]="{ stroke: info.color }"
+  />
+  <svg:circle r="0.1" class="anchor" />
+</ng-container>
+<ng-container *ngIf="info.type === 'hexagon'">
+  <svg:path
+    [attr.d]="hexagonPath"
+    *ngIf="node.isHighlighted || node.isSelected"
+    transform="scale(0.5)"
+    class="highlight-border"
+  />
+  <svg:path
+    [attr.d]="hexagonPath"
+    *ngIf="node.isHighlighted || node.isSelected"
+    transform="scale(0.5)"
+    class="highlight-shadow"
+  />
+  <svg:path [attr.d]="hexagonPath" transform="scale(0.48)" class="background" />
+  <svg:path
+    [attr.d]="hexagonPath"
+    transform="scale(0.49)"
+    class="node-shadow"
+  />
+  <svg:path
+    [attr.d]="hexagonPath"
+    transform="scale(0.5)"
+    class="node-border"
+    [ngStyle]="{ stroke: info.color }"
+  />
+  <svg:circle r="0.1" class="anchor" />
+</ng-container>
