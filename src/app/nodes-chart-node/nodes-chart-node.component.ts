@@ -18,7 +18,8 @@ export class NodesChartNodeComponent implements OnInit {
     this.shapeInfo = {
       type: 'hexagon',
       color: '#2086bf',
-      scale: 55
+      scale: 55,
+      isStacked: true
     };
   }
   onClick() {

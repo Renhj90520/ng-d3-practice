@@ -31,7 +31,18 @@
         metric="{metric}"
         contrastMode="{this.props.contrastMode}"
       /> -->
-      <svg:g app-nodes-chart-shape [info]="shapeInfo" [node]="node"></svg:g>
+      <svg:g
+        app-nodes-chart-shape
+        [info]="shapeInfo"
+        [node]="node"
+        *ngIf="!shapeInfo.isStacked"
+      ></svg:g>
+      <svg:g
+        app-nodes-chart-stackshape
+        [info]="shapeInfo"
+        [node]="node"
+        *ngIf="shapeInfo.isStacked"
+      ></svg:g>
     </svg:g>
 
     <!-- {showingNetworks &&

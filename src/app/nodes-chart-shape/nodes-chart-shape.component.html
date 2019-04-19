@@ -1,13 +1,13 @@
 <ng-container *ngIf="info.type === 'circle'">
   <svg:circle
     r="1"
-    *ngIf="node.isHighlighted || node.isSelected"
+    *ngIf="node?.isHighlighted || node?.isSelected"
     transform="scale(0.5)"
     class="highlight-border"
   />
   <svg:circle
     r="1"
-    *ngIf="node.isHighlighted || node.isSelected"
+    *ngIf="node?.isHighlighted || node?.isSelected"
     transform="scale(0.5)"
     class="highlight-shadow"
   />
@@ -24,13 +24,13 @@
 <ng-container *ngIf="info.type === 'cloud'">
   <svg:path
     [attr.d]="cloudPath"
-    *ngIf="node.isHighlighted || node.isSelected"
+    *ngIf="node?.isHighlighted || node?.isSelected"
     transform="scale(0.5)"
     class="highlight-border"
   />
   <svg:path
     [attr.d]="cloudPath"
-    *ngIf="node.isHighlighted || node.isSelected"
+    *ngIf="node?.isHighlighted || node?.isSelected"
     transform="scale(0.5)"
     class="highlight-shadow"
   />
@@ -47,13 +47,13 @@
 <ng-container *ngIf="info.type === 'hexagon'">
   <svg:path
     [attr.d]="hexagonPath"
-    *ngIf="node.isHighlighted || node.isSelected"
+    *ngIf="node?.isHighlighted || node?.isSelected"
     transform="scale(0.5)"
     class="highlight-border"
   />
   <svg:path
     [attr.d]="hexagonPath"
-    *ngIf="node.isHighlighted || node.isSelected"
+    *ngIf="node?.isHighlighted || node?.isSelected"
     transform="scale(0.5)"
     class="highlight-shadow"
   />

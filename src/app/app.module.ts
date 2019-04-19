@@ -10,6 +10,7 @@ import { NodesChartEdgeComponent } from './nodes-chart-edge/nodes-chart-edge.com
 import { NodesChartShapeComponent } from './nodes-chart-shape/nodes-chart-shape.component';
 import { DetailsCardComponent } from './details-card/details-card.component';
 import { SlimScrollComponent } from './slim-scroll/slim-scroll.component';
+import { NodesChartStackshapeComponent } from './nodes-chart-stackshape/nodes-chart-stackshape.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { SlimScrollComponent } from './slim-scroll/slim-scroll.component';
     NodesChartEdgeComponent,
     NodesChartShapeComponent,
     DetailsCardComponent,
-    SlimScrollComponent
+    SlimScrollComponent,
+    NodesChartStackshapeComponent
   ],
   imports: [BrowserModule, BrowserAnimationsModule],
   providers: [],
